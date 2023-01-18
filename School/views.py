@@ -20,4 +20,13 @@ def deleteStudent(req,id):
     return redirect(home)
 
 def accountHome(req):
-    return render(req,"home.html")
+    return render(req,"home.html",{"stu":Student.objects.all()})
+
+def editAccount(req,id):
+    account=Student.objects.get(pk=id)
+    form= StudentForm(req.POST or None , instance=account)
+    if req.method=="POST":
+        if form.is_valid():
+            form.save()
+            return redirect(home)
+    return render(req,"edit.html",{'form':form})
